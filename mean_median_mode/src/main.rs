@@ -66,6 +66,6 @@ fn mode(vec: &Vec<i32>) -> Vec<i32> {
 
     let max_key = count_map.keys().cloned().max().unwrap_or(0);
 
-    // return a copy of the 
+    // return a copy of the vector from the hashmap
     return count_map[&max_key].clone();
 }
