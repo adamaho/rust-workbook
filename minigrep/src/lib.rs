@@ -1,7 +1,7 @@
 use std::error::Error;
 use std::fs;
 
-// #[derive(Debug)]
+#[derive(PartialEq, Debug)]
 pub struct Config {
     query: String,
     filename: String,
@@ -58,8 +58,7 @@ mod tests {
 
         let config = Config::new(&args).unwrap();
 
-        assert_eq!(args[1], config.query);
-        assert_eq!(args[2], config.filename);
+        assert_eq!(Config { query: String::from("foo"), filename: String::from("bar.txt") }, config);
     }
 
     #[test]
