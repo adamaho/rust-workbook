@@ -8,13 +8,18 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new(args: &[String]) -> Result<Config, &'static str> {
-        if args.len() < 3 {
-            return Err("Not enough arguments passed");
-        }
+    pub fn new(mut args: std::env::Args ) -> Result<Config, &'static str> {
+        args.next();
 
-        let query = args[1].clone();
-        let filename = args[2].clone();
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Did not get a query argument"),
+        };
+
+        let filename = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Missing filename"),
+        };
 
         Ok(Config { query, filename })
     }
@@ -33,42 +38,14 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 }
 
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
-    let mut results = Vec::new();
-
-    for line in contents.lines() {
-        if line.contains(query) {
-            results.push(line);
-        }
-    }
-
-    results
+    contents.lines()
+        .filter(|line| line.contains(query))
+        .collect()
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn it_returns_config() {
-        let args: Vec<String> = vec![
-            String::from("executer"),
-            String::from("foo"),
-            String::from("bar.txt"),
-        ];
-
-        let config = Config::new(&args).unwrap();
-
-        assert_eq!(Config { query: String::from("foo"), filename: String::from("bar.txt") }, config);
-    }
-
-    #[test]
-    fn it_returns_error_when_too_few_args() {
-        let args: Vec<String> = vec![String::from("foo"), String::from("bar.txt")];
-
-        let config = Config::new(&args);
-
-        assert!(config.is_err());
-    }
 
     #[test]
     fn it_returns_one_result() {
