@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@foo/rust-wasm": "/Users/adam.aho/personal/rust-workbook/wasm-fun/rust-wasm/pkg/",
+    "@foo/rust-wasm": "file./wasm-fun/rust-wasm/pkg/",
     "@testing-library/jest-dom": "4.2.4",
     "@testing-library/react": "9.5.0",
     "@testing-library/user-event": "7.2.1",
